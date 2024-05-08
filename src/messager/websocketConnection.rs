@@ -20,5 +20,5 @@ pub async fn init_ws_conn(ws_url:String)  {
 }
 
 pub async fn get_ws_conn() -> &'static Mutex<WebSocketStream<MaybeTlsStream<TcpStream>>> {
-    WS_CONN.get().unwrap()
+    WS_CONN.get().expect("connection not available")
 }
