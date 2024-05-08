@@ -8,7 +8,7 @@ Follow these steps to install the Zclient CLI:
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/NagaraTech/client-cli.git
 2. install cli
     ```bash
    cargo install --path client-cli
