@@ -45,6 +45,76 @@ pub struct ZMessage {
     #[prost(bytes = "vec", tag = "10")]
     pub to: ::prost::alloc::vec::Vec<u8>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ZChat {
+    #[prost(string, tag = "1")]
+    pub message_data: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "2")]
+    pub clock: ::core::option::Option<ClockInfo>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MergeLog {
+    #[prost(bytes = "vec", tag = "1")]
+    pub from_id: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub to_id: ::prost::alloc::vec::Vec<u8>,
+    #[prost(uint64, tag = "3")]
+    pub start_count: u64,
+    #[prost(uint64, tag = "4")]
+    pub end_count: u64,
+    #[prost(message, optional, tag = "5")]
+    pub s_clock: ::core::option::Option<Clock>,
+    #[prost(message, optional, tag = "6")]
+    pub e_clock: ::core::option::Option<Clock>,
+    #[prost(uint64, tag = "7")]
+    pub merge_at: u64,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Clock {
+    #[prost(map = "string, uint64", tag = "1")]
+    pub values: ::std::collections::HashMap<::prost::alloc::string::String, u64>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClockInfo {
+    #[prost(message, optional, tag = "1")]
+    pub clock: ::core::option::Option<Clock>,
+    /// id 为node id
+    #[prost(bytes = "vec", tag = "2")]
+    pub id: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub message_id: ::prost::alloc::vec::Vec<u8>,
+    #[prost(uint64, tag = "4")]
+    pub count: u64,
+    #[prost(uint64, tag = "5")]
+    pub create_at: u64,
+}
+/// type = TYPE_CLOCK_NODE
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClockNode {
+    #[prost(message, optional, tag = "1")]
+    pub clock: ::core::option::Option<Clock>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub id: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub message_id: ::prost::alloc::vec::Vec<u8>,
+    #[prost(uint64, tag = "4")]
+    pub count: u64,
+    #[prost(uint64, tag = "5")]
+    pub create_at: u64,
+    #[prost(bytes = "vec", tag = "6")]
+    pub raw_message: ::prost::alloc::vec::Vec<u8>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeInfo {
+    #[prost(string, repeated, tag = "1")]
+    pub node_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ZIdentity {
@@ -136,6 +206,7 @@ pub enum ZType {
     Event = 1,
     Clock = 2,
     Gateway = 3,
+    Zchat = 4,
 }
 impl ZType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -148,6 +219,7 @@ impl ZType {
             ZType::Event => "Z_TYPE_EVENT",
             ZType::Clock => "Z_TYPE_CLOCK",
             ZType::Gateway => "Z_TYPE_GATEWAY",
+            ZType::Zchat => "Z_TYPE_ZCHAT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -157,6 +229,7 @@ impl ZType {
             "Z_TYPE_EVENT" => Some(Self::Event),
             "Z_TYPE_CLOCK" => Some(Self::Clock),
             "Z_TYPE_GATEWAY" => Some(Self::Gateway),
+            "Z_TYPE_ZCHAT" => Some(Self::Zchat),
             _ => None,
         }
     }

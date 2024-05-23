@@ -36,10 +36,17 @@ impl Keystore {
         Ok(())
     }
 
-    pub fn sign(&self, data: &String) -> [u8; 64] {
+    pub fn sign(&self, data: &Vec<u8>) -> [u8; 64] {
         let keypair = Keypair::from_bytes(&self.keypair).unwrap();
-        let signature = keypair.sign(data.as_bytes());
+        let signature = keypair.sign(data);
         signature.to_bytes()
+    }
+
+    pub fn public_key(&self) -> String{
+        let keypair = Keypair::from_bytes(&self.keypair).unwrap();
+        let public_key_bytes = keypair.public.to_bytes();
+        let public_key_hex = hex::encode(public_key_bytes);
+        public_key_hex
     }
 
     #[cfg(unix)]
